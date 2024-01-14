@@ -11,8 +11,9 @@ use Yii;
  * @property string $email
  * @property string $password
  */
-class User extends \yii\db\ActiveRecord
+class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 {
+
     /**
      * {@inheritdoc}
      */
@@ -42,5 +43,50 @@ class User extends \yii\db\ActiveRecord
             'email' => 'Email',
             'password' => 'Password',
         ];
+    }
+    
+    public static function findByEmail($email)
+    {
+        return User::findOne(['email' => $email]);
+    }
+
+     /**
+     * {@inheritdoc}
+     */
+    public static function findIdentity($id)
+    {
+        return isset(self::$users[$id]) ? User::findOne(['id' => $id]) : null;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function findIdentityByAccessToken($token, $type = null)
+    {
+        return User::findOne(['accessToken' => $this->accessToken]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getId()
+    {
+        return $this->userId;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAuthKey()
+    {
+        return $this->authKey;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function validateAuthKey($authKey)
+    {
+        return $this->authKey === $authKey;
     }
 }

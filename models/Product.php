@@ -15,7 +15,7 @@ use Yii;
  *
  * @property Promotions[] $promotions
  */
-class Products extends \yii\db\ActiveRecord
+class Product extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
